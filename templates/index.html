@@ -328,11 +328,12 @@
 
         socket.on("pause", (msg) => {
             video.pause();
-            video.currentTime = time;
+            video.currentTime = msg;
         })
 
         socket.on("seek", (msg) => {
             video.pause();
+            video.currentTime = msg.time;
             if (msg.type === "f") {
                 video.currentTime += 1;
             } else {
