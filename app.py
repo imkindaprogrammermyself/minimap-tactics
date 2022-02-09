@@ -28,13 +28,18 @@ else:
 APP.mount("/socket.io", engineio.ASGIApp(engineio_server=SIO, engineio_path=""))
 
 
+@APP.get("/", response_class=PlainTextResponse)
+async def root(request: Request):
+    return PlainTextResponse(content="Nothing here. Move along.")
+
+
 @APP.get("/{room_id}/{channel_id}/{file_id}/{file_name}", response_class=HTMLResponse)
-async def root(request: Request,
-               file_name: str = Path(default="", regex=r".*\.mp4$"),
-               room_id: str = Path(default="", regex=r"^[0-9]{10}$"),
-               channel_id: str = Path(default="", regex="^[0-9]{18}$"),
-               file_id: str = Path(default="", regex=r"^[0-9]{18}$")
-               ):
+async def tactics(request: Request,
+                  file_name: str = Path(default="", regex=r".*\.mp4$"),
+                  room_id: str = Path(default="", regex=r"^[0-9]{10}$"),
+                  channel_id: str = Path(default="", regex="^[0-9]{18}$"),
+                  file_id: str = Path(default="", regex=r"^[0-9]{18}$")
+                  ):
     assert file_name and room_id and channel_id and file_id
     video_url = f"https://cdn.discordapp.com/attachments/{channel_id}/{file_id}/{file_name}"
     cookies = {"room_id": room_id}
