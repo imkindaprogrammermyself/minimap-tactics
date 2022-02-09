@@ -1,1 +1,1 @@
-web: uvicorn app:APP --log-config config/config_logging.json
+web: uvicorn app:APP --host 0.0.0.0 --log-config config/config_logging.json
