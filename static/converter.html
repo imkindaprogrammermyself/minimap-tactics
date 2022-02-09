@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Draw over minimap renders.">
+    <meta name="keywords" content="World of Warships, Minimap, Draw">
+    <meta name="author" content="notyourfather">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minimap Tactics (Converter)</title>
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #102031;
+        }
+
+        .card {
+            width: 70% !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="fileUrl" placeholder="Minimap render file url.">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="outputUrl" placeholder="Minimap tactics url." readonly>
+                </div>
+                <button id="convert" class="btn btn-primary">Convert & Copy</button>
+                <button id="convert-open" class="btn btn-primary">Convert & Open</button>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/static/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">
+        const btnConvert = document.getElementById("convert");
+        const btnConvertOpen = document.getElementById("convert-open");
+        const fileUrl = document.getElementById("fileUrl");
+        const outputUrl = document.getElementById("outputUrl");
+        const pattern = /^https:\/\/cdn\.discordapp\.com\/attachments\/[0-9]{18}\/[0-9]{18}\/.*.mp4$/;
+
+        function testAndConvert(input) {
+            if (pattern.test(input)) {
+                let url = new URL(input);
+                let parts = url.pathname.split('/');
+                let rand = Math.random().toString().substr(2, 10);
+                let result = `https://minimap-tactics.herokuapp.com/${rand}/${parts[2]}/${parts[3]}/${parts[4]}`;
+                outputUrl.value = result;
+                return result
+            }
+        }
+
+        btnConvert.addEventListener("click", function (event) {
+            let result = testAndConvert(fileUrl.value);
+            if (result) {
+                navigator.clipboard.writeText(result);
+            }
+        })
+
+        btnConvertOpen.addEventListener("click", function (event) {
+            let result = testAndConvert(fileUrl.value);
+            if (result) {
+                window.open(result);
+            }
+        })
+    </script>
+</body>
+
+</html>

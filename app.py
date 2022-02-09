@@ -28,9 +28,9 @@ else:
 APP.mount("/socket.io", engineio.ASGIApp(engineio_server=SIO, engineio_path=""))
 
 
-@APP.get("/", response_class=PlainTextResponse)
+@APP.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    return PlainTextResponse(content="Nothing here. Move along.")
+    return FileResponse("static/converter.html", media_type="text/html")
 
 
 @APP.get("/{room_id}/{channel_id}/{file_id}/{file_name}", response_class=HTMLResponse)
