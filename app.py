@@ -38,7 +38,7 @@ async def root(request: Request,
     assert file_name and room_id and channel_id and file_id
     video_url = f"https://cdn.discordapp.com/attachments/{channel_id}/{file_id}/{file_name}"
     cookies = {"room_id": room_id}
-    response = TEMPLATES.TemplateResponse("index.html", {"request": request, "video_url": video_url})
+    response = TEMPLATES.TemplateResponse("index.html", {"request": request, "room": room_id, "video_url": video_url})
     for k, v in cookies.items():
         response.set_cookie(k, v)
     return response
@@ -79,22 +79,49 @@ async def handle_mouse_event(sid: str, msg: dict):
         pass
 
 
-@SIO.on("event_video")
-async def handle_event_video(sid: str, msg: dict):
+@SIO.on("play")
+async def handle_play(sid: str):
     try:
-        msg.update({"client_id": sid})
         async with SIO.session(sid) as session:
-            await SIO.emit("event_video", data=msg, room=session["room"], skip_sid=sid)
+            await SIO.emit("play", room=session["room"])
     except Exception:
         pass
 
 
-@SIO.on("key_up")
-async def handle_key_up(sid, msg):
+@SIO.on("pause")
+async def handle_play(sid: str, msg: dict):
     try:
+        async with SIO.session(sid) as session:
+            await SIO.emit("pause", data=msg, room=session["room"])
+    except Exception:
+        pass
+
+
+@SIO.on("stop")
+async def handle_play(sid: str, msg: dict):
+    try:
+        async with SIO.session(sid) as session:
+            await SIO.emit("stop", data=msg, room=session["room"])
+    except Exception:
+        pass
+
+
+@SIO.on("seek")
+async def handle_play(sid: str, msg: dict):
+    try:
+        async with SIO.session(sid) as session:
+            await SIO.emit("seek", data=msg, room=session["room"])
+    except Exception:
+        pass
+
+
+@SIO.on("clear")
+async def handle_clear(sid):
+    try:
+        msg = {}
         msg.update({"client_id": sid})
         async with SIO.session(sid) as session:
-            await SIO.emit('key_up', msg, room=session["room"])
+            await SIO.emit('clear', msg, room=session["room"])
     except Exception:
         pass
 
