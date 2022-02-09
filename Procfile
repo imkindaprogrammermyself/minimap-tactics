@@ -1,1 +1,1 @@
-web: gunicorn -w 4 -k uvicorn.workers.UvicornWorker app:APP
+web: uvicorn app:APP --log-config config/config_logging.json
