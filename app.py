@@ -85,10 +85,10 @@ async def handle_mouse_event(sid: str, msg: dict):
 
 
 @SIO.on("play")
-async def handle_play(sid: str):
+async def handle_play(sid: str, msg):
     try:
         async with SIO.session(sid) as session:
-            await SIO.emit("play", room=session["room"])
+            await SIO.emit("play", data=msg, room=session["room"])
     except Exception:
         pass
 

@@ -27,7 +27,8 @@
         }
 
         .content {
-            margin: 1.5em;
+            margin-top: 1.5em;
+            margin-bottom: 1.5em;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -323,7 +324,8 @@
         }
 
         socket.on("play", (msg) => {
-            video.play().catch((err) => { });
+            //video.currentTime = msg;
+            video.play().then((res) => {video.currentTime = msg}).catch((err) => { });
         })
 
         socket.on("pause", (msg) => {
@@ -355,7 +357,7 @@
                     let playing = video.currentTime > 0 && !video.paused && !video.ended
                         && video.readyState > video.HAVE_CURRENT_DATA;
                     if (!playing) {
-                        socket.emit("play");
+                        socket.emit("play", video.currentTime);
                     } else {
                         socket.emit("pause", video.currentTime);
                     }
