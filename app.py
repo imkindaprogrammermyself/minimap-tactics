@@ -37,8 +37,8 @@ async def root(request: Request):
 async def tactics(request: Request,
                   file_name: str = Path(default="", regex=r".*\.mp4$"),
                   room_id: str = Path(default="", regex=r"^[0-9]{10}$"),
-                  channel_id: str = Path(default="", regex="^[0-9]{18}$"),
-                  file_id: str = Path(default="", regex=r"^[0-9]{18}$")
+                  channel_id: str = Path(default="", regex="^[0-9]*$"),
+                  file_id: str = Path(default="", regex=r"^[0-9]*$")
                   ):
     assert file_name and room_id and channel_id and file_id
     video_url = f"https://cdn.discordapp.com/attachments/{channel_id}/{file_id}/{file_name}"
