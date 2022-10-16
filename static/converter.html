@@ -43,7 +43,7 @@
         const btnConvertOpen = document.getElementById("convert-open");
         const fileUrl = document.getElementById("fileUrl");
         const outputUrl = document.getElementById("outputUrl");
-        const pattern = /^https:\/\/cdn\.discordapp\.com\/attachments\/[0-9]{18}\/[0-9]{18}\/.*.mp4$/;
+        const pattern = /^https:\/\/cdn\.discordapp\.com\/attachments\/[0-9]*\/[0-9]*\/*.*\.mp4$/;
 
         function testAndConvert(input) {
             if (pattern.test(input)) {
